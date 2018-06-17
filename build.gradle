@@ -29,6 +29,7 @@ repositories {
 
 
 dependencies {
+	compile('com.h2database:h2')
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter-webflux')
@@ -36,3 +37,22 @@ dependencies {
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('io.projectreactor:reactor-test')
 }
+
+task buildFrontend(type: Exec) {
+	workingDir "${frontendWorkingDir}"
+	commandLine "cmd", "/c", 'npm run build'
+	doLast {
+		println 'Hello World'
+	}
+}
+
+task copyFrontend(type: Copy) {
+	from "${frontendWorkingDir}/dist"
+	into "${projectDir}/build/resources/main/static"
+
+}
+
+copyFrontend.mustRunAfter processResources
+bootJar.dependsOn copyFrontend
+copyFrontend.dependsOn buildFrontend
+
