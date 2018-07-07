@@ -1,0 +1,44 @@
+buildscript {
+    ext {
+        springBootVersion = '2.1.0.BUILD-SNAPSHOT'
+    }
+    repositories {
+        mavenCentral()
+        maven { url "https://repo.spring.io/snapshot" }
+        maven { url "https://repo.spring.io/milestone" }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'io.spring.dependency-management'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile rootProject
+}
+
+task buildFrontend(type: Exec) {
+    workingDir  "${frontendWorkingDir}"
+    commandLine "cmd", "/c", 'npm run build'
+    doLast {
+        println 'Hello World'
+    }
+}
+
+task copyFrontend(type: Copy) {
+    from "${frontendWorkingDir}/dist"
+    into "${projectDir}/build/resources/main/static"
+
+}
+
+copyFrontend.mustRunAfter processResources
+jar.dependsOn copyFrontend
+copyFrontend.dependsOn buildFrontend
