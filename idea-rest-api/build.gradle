@@ -23,10 +23,16 @@ repositories {
 
 dependencies {
     compile rootProject
+    // https://mvnrepository.com/artifact/org.postgresql/postgresql
+    compile group: 'org.postgresql', name: 'postgresql', version: '42.1.4'
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.0.1.RELEASE'
+    // https://mvnrepository.com/artifact/org.springframework.security.oauth/spring-security-oauth2
+    compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.3.2.RELEASE'
 }
 
 task buildFrontend(type: Exec) {
-    workingDir  "${frontendWorkingDir}"
+    workingDir  "C:\\Users\\Nadia\\WebstormProjects\\project-memories-frontend"
     commandLine "cmd", "/c", 'npm run build'
     doLast {
         println 'Hello World'
@@ -34,7 +40,7 @@ task buildFrontend(type: Exec) {
 }
 
 task copyFrontend(type: Copy) {
-    from "${frontendWorkingDir}/dist"
+    from "C:\\Users\\Nadia\\WebstormProjects\\project-memories-frontend\\dist"
     into "${projectDir}/build/resources/main/static"
 
 }
