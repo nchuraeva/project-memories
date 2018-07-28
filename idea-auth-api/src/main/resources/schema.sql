@@ -1,67 +1,73 @@
--- used in tests that use HSQL
-create table oauth_client_details (
-  client_id VARCHAR(256) PRIMARY KEY,
-  resource_ids VARCHAR(256),
-  client_secret VARCHAR(256),
-  scope VARCHAR(256),
-  authorized_grant_types VARCHAR(256),
-  web_server_redirect_uri VARCHAR(256),
-  authorities VARCHAR(256),
-  access_token_validity INTEGER,
-  refresh_token_validity INTEGER,
-  additional_information VARCHAR(4096),
-  autoapprove VARCHAR(256)
+CREATE TABLE oauth_client_details (
+  client_id               VARCHAR(255) PRIMARY KEY,
+  resource_ids            VARCHAR(255),
+  client_secret           VARCHAR(255),
+  scope                   VARCHAR(255),
+  authorized_grant_types  VARCHAR(255),
+  web_server_redirect_uri VARCHAR(255),
+  authorities             VARCHAR(255),
+  access_token_validity   INTEGER,
+  refresh_token_validity  INTEGER,
+  additional_information  VARCHAR(4096),
+  autoapprove             SMALLINT
 );
 
-create table oauth_client_token (
-  token_id VARCHAR(256),
-  token LONGVARBINARY,
-  authentication_id VARCHAR(256) PRIMARY KEY,
-  user_name VARCHAR(256),
-  client_id VARCHAR(256)
+CREATE TABLE oauth_client_token (
+  token_id          VARCHAR(255),
+  token             BYTEA,
+  authentication_id VARCHAR(255),
+  user_name         VARCHAR(255),
+  client_id         VARCHAR(255)
 );
 
-create table oauth_access_token (
-  token_id VARCHAR(256),
-  token LONGVARBINARY,
-  authentication_id VARCHAR(256) PRIMARY KEY,
-  user_name VARCHAR(256),
-  client_id VARCHAR(256),
-  authentication LONGVARBINARY,
-  refresh_token VARCHAR(256)
+CREATE TABLE oauth_access_token (
+  token_id          VARCHAR(255),
+  token             BYTEA,
+  authentication_id VARCHAR(255),
+  user_name         VARCHAR(255),
+  client_id         VARCHAR(255),
+  authentication    BYTEA,
+  refresh_token     VARCHAR(255)
 );
 
-create table oauth_refresh_token (
-  token_id VARCHAR(256),
-  token LONGVARBINARY,
-  authentication LONGVARBINARY
+CREATE TABLE oauth_refresh_token (
+  token_id       VARCHAR(255),
+  token          BYTEA,
+  authentication BYTEA
 );
 
-create table oauth_code (
-  code VARCHAR(256), authentication LONGVARBINARY
+CREATE TABLE oauth_code (
+  code           VARCHAR(255),
+  authentication BYTEA
 );
 
-create table oauth_approvals (
-	userId VARCHAR(256),
-	clientId VARCHAR(256),
-	scope VARCHAR(256),
-	status VARCHAR(10),
-	expiresAt TIMESTAMP,
-	lastModifiedAt TIMESTAMP
+CREATE TABLE authority (
+  name VARCHAR(50) NOT NULL PRIMARY KEY
 );
 
-
--- customized oauth_client_details table
-create table ClientDetails (
-  appId VARCHAR(256) PRIMARY KEY,
-  resourceIds VARCHAR(256),
-  appSecret VARCHAR(256),
-  scope VARCHAR(256),
-  grantTypes VARCHAR(256),
-  redirectUrl VARCHAR(256),
-  authorities VARCHAR(256),
-  access_token_validity INTEGER,
-  refresh_token_validity INTEGER,
-  additionalInformation VARCHAR(4096),
-  autoApproveScopes VARCHAR(256)
+CREATE TABLE users
+(
+  id          SERIAL                 NOT NULL,
+  username    CHARACTER VARYING(100) NOT NULL,
+  password    CHARACTER VARYING(100) NOT NULL,
+  activated   BOOLEAN DEFAULT FALSE,
+  email       CHARACTER VARYING(100) NOT NULL,
+  address     CHARACTER VARYING(100) NULL,
+  pub_key     CHARACTER VARYING(100) NULL,
+  private_key CHARACTER VARYING(100) NULL,
+  reset_token CHARACTER VARYING(100) NULL,
+  CONSTRAINT user_id_key PRIMARY KEY (id),
+  CONSTRAINT username_unique UNIQUE (username)
 );
+
+CREATE TABLE user_authority (
+  id        SERIAL                 NOT NULL,
+  username  CHARACTER VARYING(100) NOT NULL,
+  authority CHARACTER VARYING(100) NOT NULL
+);
+ALTER TABLE public.user_authority
+  ADD CONSTRAINT user_authority_user_username_fk
+FOREIGN KEY (username) REFERENCES users (username);
+
+
+

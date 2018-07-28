@@ -17,7 +17,7 @@ import javax.sql.DataSource;
 
 @EnableWebSecurity
 @Configuration
-@ConfigurationProperties(prefix = "spring.datasource")
+@Import(JpaConfig.class)
 public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private DataSource dataSource;
@@ -30,19 +30,25 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth)     throws Exception {
-        auth.inMemoryAuthentication().withUser("user").password("$2a$10$mritUNcLpmJ.HTzVwrb4JuZ9b6RX6Wiu57JgKgdcjJMod5WqpAQxy").roles("USER");
+        auth.jdbcAuthentication().dataSource(dataSource).passwordEncoder(passwordEncoder())
+                .usersByUsernameQuery(
+                        "select username,password, activated from users where username=?")
+                .authoritiesByUsernameQuery(
+                        "select username, authority from user_authority where username=?");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         /*   http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and().authorizeRequests().
                 and().formLogin().permitAll();*/
-        http
+      http.authorizeRequests().
+                and().formLogin().permitAll();
+     /* http
                 .authorizeRequests().mvcMatchers("/login").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
-                .httpBasic();
+                .httpBasic();*/
     }
 
     @Override

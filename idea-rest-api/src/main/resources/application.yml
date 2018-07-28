@@ -8,6 +8,7 @@ server:
 oauth:
   clientId: clientId
   clientSecret: secret
+  serviceUrl: http://localhost:8081
 
 ###
 #   Database Settings

@@ -6,6 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,7 +25,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableAuthorizationServer
-@ConfigurationProperties(prefix = "spring.datasource")
+@Import(JpaConfig.class)
 public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter implements EnvironmentAware {
 
     private Environment environment;
@@ -39,15 +40,7 @@ public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigur
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-      //  clients.jdbc(dataSource);
-        clients.inMemory()
-                .withClient("clientId")
-                .secret(passwordEncoder().encode("secret"))
-                .authorizedGrantTypes("password", "refresh_token")
-                .authorities("USER")
-                .scopes("read", "write")
-                .accessTokenValiditySeconds(10000)
-                .refreshTokenValiditySeconds(20000);
+        clients.jdbc(dataSource);
     }
 
 
