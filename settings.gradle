@@ -1,4 +1,5 @@
 rootProject.name = 'project-memories'
 include 'idea-auth-api'
 include 'idea-rest-api'
+include 'lingo-rest-api'
 

@@ -1,0 +1,42 @@
+spring:
+  profiles:
+    active: "dev"
+---
+server:
+  port: 8080
+
+oauth:
+  clientId: clientId
+  clientSecret: secret
+  serviceUrl: http://localhost:8081
+
+###
+#   Database Settings
+###
+spring:
+  profiles: dev
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    jdbcUrl: jdbc:postgresql://localhost:5432/lingo
+    username: postgres
+    password: 1w2q3r4e5y6t
+    driverClassName: org.postgresql.Driver
+  jpa:
+    generate-ddl: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        show_sql: true
+        temp:
+          use_jdbc_metadata_defaults: false
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+
+
+frontend:
+  url: http://localhost:4200
+

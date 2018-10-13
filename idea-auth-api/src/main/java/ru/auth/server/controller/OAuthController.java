@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class OAuthController {
 
-    @Autowired
+   @Autowired
     private TokenStore tokenStore;
 
     @RequestMapping(value = "/revoke-token", method = RequestMethod.GET)

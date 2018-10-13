@@ -1,25 +1,14 @@
-package ru.auth.server.model;
+package ru.rest.server.model;
 
 
 import javax.persistence.*;
 
-@Entity
-@Table(name = "users")
+
 public class User {
-
-    @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "id")
     private Integer id;
-
     private String username;
-
     private String password;
-
     private String email;
-
-    @Column(name = "reset_token")
-    private String resetToken;
 
 
     public User(String username, String password, boolean activated, String email) {
@@ -30,6 +19,14 @@ public class User {
 
     public User() {
 
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Integer getId() {
@@ -56,28 +53,6 @@ public class User {
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-
-
-    public String getResetToken() { return resetToken; }
-
-    public void setResetToken(String resetToken) { this.resetToken = resetToken; }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email +
-                '}';
-    }
-
 }
+
+

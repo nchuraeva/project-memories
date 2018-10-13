@@ -29,10 +29,10 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     @Autowired
-    public void configureGlobalSecurity(AuthenticationManagerBuilder auth)     throws Exception {
+    public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication().dataSource(dataSource).passwordEncoder(passwordEncoder())
                 .usersByUsernameQuery(
-                        "select username,password, activated from users where username=?")
+                        "select username, password, activated from users where username=?")
                 .authoritiesByUsernameQuery(
                         "select username, authority from user_authority where username=?");
     }
@@ -41,14 +41,8 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         /*   http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and().authorizeRequests().
                 and().formLogin().permitAll();*/
-      http.authorizeRequests().
+      http.csrf().disable().authorizeRequests().
                 and().formLogin().permitAll();
-     /* http
-                .authorizeRequests().mvcMatchers("/login").permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
-                .httpBasic();*/
     }
 
     @Override

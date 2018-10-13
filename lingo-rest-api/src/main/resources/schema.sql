@@ -1,0 +1,7 @@
+CREATE TABLE public.desk
+(
+  id BIGSERIAL PRIMARY KEY,
+  title VARCHAR(64) NOT NULL,
+  username  CHARACTER VARYING(100) NOT NULL,
+  type VARCHAR(32) NOT NULL
+);

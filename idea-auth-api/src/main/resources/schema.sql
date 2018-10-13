@@ -52,9 +52,6 @@ CREATE TABLE users
   password    CHARACTER VARYING(100) NOT NULL,
   activated   BOOLEAN DEFAULT FALSE,
   email       CHARACTER VARYING(100) NOT NULL,
-  address     CHARACTER VARYING(100) NULL,
-  pub_key     CHARACTER VARYING(100) NULL,
-  private_key CHARACTER VARYING(100) NULL,
   reset_token CHARACTER VARYING(100) NULL,
   CONSTRAINT user_id_key PRIMARY KEY (id),
   CONSTRAINT username_unique UNIQUE (username)
